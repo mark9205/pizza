@@ -19,6 +19,7 @@ function App() {
           <div className="content__items">
             {pizzass.map((pizza) => (
               <PizzaBlock
+                types={pizza.types}
                 image={pizza.imageUrl}
                 key={pizza.id}
                 sizes={pizza.sizes}

@@ -11,10 +11,6 @@ function Categories() {
     'Закрытые',
   ];
 
-  const onClickCategory = (index) => {
-    setActiveCategory(index);
-  };
-
   return (
     <div className="categories">
       <ul>
@@ -22,7 +18,7 @@ function Categories() {
           <li
             className={index === activeCategory ? 'active' : ''}
             key={index}
-            onClick={() => onClickCategory(index)}
+            onClick={() => setActiveCategory(index)}
           >
             {cat}
           </li>
