@@ -3,6 +3,7 @@ import Header from './components/Header';
 import PizzaBlock from './components/PizzaBlock';
 import Sort from './components/Sort';
 import './scss/app.scss';
+import pizzass from './assets/pizzas.json';
 
 function App() {
   return (
@@ -16,9 +17,15 @@ function App() {
           </div>
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
-            <PizzaBlock title={'чизбургер-пицца'} price={500} />
-            <PizzaBlock title={'пеперрони'} price={400} />
-            <PizzaBlock title={'маргарита'} price={350} />
+            {pizzass.map((pizza) => (
+              <PizzaBlock
+                image={pizza.imageUrl}
+                key={pizza.id}
+                sizes={pizza.sizes}
+                title={pizza.title}
+                price={pizza.price}
+              />
+            ))}
           </div>
         </div>
       </div>
