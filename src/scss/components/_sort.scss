@@ -16,8 +16,10 @@
 
     span {
       color: $orange;
-      border-bottom: 1px dashed $orange;
       cursor: pointer;
+      width: 170px;
+      text-align: center;
+      padding-left: 20px;
     }
   }
 
@@ -30,7 +32,7 @@
     border-radius: 10px;
     overflow: hidden;
     padding: 10px 0;
-    width: 160px;
+    width: 180px;
 
     ul {
       overflow: hidden;

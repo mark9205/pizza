@@ -5,8 +5,13 @@
   text-align: center;
   margin-bottom: 65px;
 
-  &:not(:nth-of-type(4n)) {
-    margin-right: 35px;
+  @media (max-width: 600px) {
+    width: 230px;
+  }
+
+  &-wrapper {
+    display: flex;
+    justify-content: center;
   }
 
   &__image {
@@ -30,10 +35,7 @@
     ul {
       display: flex;
       flex: 1;
-
-      &:first-of-type {
-        margin-bottom: 6px;
-      }
+      padding: 3px;
 
       li {
         padding: 8px;
