@@ -1,12 +1,18 @@
 import { useState } from 'react';
 
-function Sort({selected, setSelected}) {
+function Sort({ selected, setSelected }) {
   const [isVisible, setIsVisible] = useState(false);
-  const list = ['по популярности', 'по цене', 'по алфавиту'];
-  
+  const list = [
+    { name: 'по популярности -', sort: 'rating' },
+    { name: 'по популярности +', sort: '-rating' },
+    { name: 'по цене -', sort: 'price' },
+    { name: 'по цене +', sort: '-price' },
+    { name: 'по алфавиту -', sort: 'title' },
+    { name: 'по алфавиту +', sort: '-title' },
+  ];
 
-  const onClickSelected = (i) => {
-    setSelected(i);
+  const onClickSelected = (sort) => {
+    setSelected(sort);
     setIsVisible(false);
   };
 
@@ -14,7 +20,7 @@ function Sort({selected, setSelected}) {
     <div className="sort">
       <div className="sort__label">
         <span onClick={() => setIsVisible((prev) => !prev)}>
-          {list[selected]}
+          {selected.name}
         </span>
       </div>
       {isVisible && (
@@ -22,11 +28,11 @@ function Sort({selected, setSelected}) {
           <ul>
             {list.map((item, i) => (
               <li
-                className={selected === i ? 'active' : ''}
-                onClick={() => onClickSelected(i)}
+                className={selected.sort === item.sort ? 'active' : ''}
+                onClick={() => onClickSelected(item)}
                 key={i}
               >
-                {item}
+                {item.name}
               </li>
             ))}
           </ul>
