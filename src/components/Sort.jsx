@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-function Sort() {
+function Sort({selected, setSelected}) {
   const [isVisible, setIsVisible] = useState(false);
   const list = ['по популярности', 'по цене', 'по алфавиту'];
-  const [selected, setSelected] = useState(0);
+  
 
   const onClickSelected = (i) => {
     setSelected(i);
