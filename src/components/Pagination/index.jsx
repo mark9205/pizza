@@ -1,11 +1,20 @@
 import React from 'react';
+import ReactPaginate from 'react-paginate';
+import styles from './Pagination.module.scss';
 
-const Pagination = () => {
-    return (
-        <div>
-            
-        </div>
-    );
+const Pagination = ({ onPageChange }) => {
+  return (
+    <ReactPaginate
+      className={styles.root}
+      breakLabel="..."
+      nextLabel=">"
+      previousLabel="<"
+      onPageChange={(e) => onPageChange(e.selected + 1)}
+      pageRangeDisplayed={8}
+      pageCount={3}
+      renderOnZeroPageCount={null}
+    />
+  );
 };
 
 export default Pagination;
