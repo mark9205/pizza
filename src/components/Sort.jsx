@@ -1,45 +1,52 @@
-import { useState } from 'react';
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setSort } from "../redux/slices/filterSlice";
 
-function Sort({ selected, setSelected }) {
-  const [isVisible, setIsVisible] = useState(false);
-  const list = [
-    { name: 'по популярности -', sort: 'rating' },
-    { name: 'по популярности +', sort: '-rating' },
-    { name: 'по цене -', sort: 'price' },
-    { name: 'по цене +', sort: '-price' },
-    { name: 'по алфавиту -', sort: 'title' },
-    { name: 'по алфавиту +', sort: '-title' },
-  ];
+function Sort() {
+	const selected = useSelector((state) => state.filter.sort);
+	const dispatch = useDispatch();
 
-  const onClickSelected = (sort) => {
-    setSelected(sort);
-    setIsVisible(false);
-  };
+	const [isVisible, setIsVisible] = useState(false);
+	const list = [
+		{ name: "по популярности -", sortProperty: "rating" },
+		{ name: "по популярности +", sortProperty: "-rating" },
+		{ name: "по цене -", sortProperty: "price" },
+		{ name: "по цене +", sortProperty: "-price" },
+		{ name: "по алфавиту -", sortProperty: "title" },
+		{ name: "по алфавиту +", sortProperty: "-title" },
+	];
 
-  return (
-    <div className="sort">
-      <div className="sort__label">
-        <span onClick={() => setIsVisible((prev) => !prev)}>
-          {selected.name}
-        </span>
-      </div>
-      {isVisible && (
-        <div className="sort__popup">
-          <ul>
-            {list.map((item, i) => (
-              <li
-                className={selected.sort === item.sort ? 'active' : ''}
-                onClick={() => onClickSelected(item)}
-                key={i}
-              >
-                {item.name}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  );
+	const onClickSelected = (item) => {
+		dispatch(setSort(item));
+		setIsVisible(false);
+	};
+
+	return (
+		<div className="sort">
+			<div className="sort__label">
+				<span onClick={() => setIsVisible((prev) => !prev)}>
+					{selected.name}
+				</span>
+			</div>
+			{isVisible && (
+				<div className="sort__popup">
+					<ul>
+						{list.map((item, i) => (
+							<li
+								className={
+									selected.sortProperty === item.sortProperty ? "active" : ""
+								}
+								onClick={() => onClickSelected(item)}
+								key={i}
+							>
+								{item.name}
+							</li>
+						))}
+					</ul>
+				</div>
+			)}
+		</div>
+	);
 }
 
 export default Sort;

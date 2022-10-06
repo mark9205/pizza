@@ -5,30 +5,35 @@ import Pagination from "../components/Pagination";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlockSkeleton";
 import Sort from "../components/Sort";
+import { useSelector, useDispatch } from "react-redux";
+import { setCaregoryId } from "../redux/slices/filterSlice";
 
 const Home = () => {
-	const { searchValue } = useContext(SearchContext);
+	const { sort, categoryId } = useSelector((state) => state.filter);
 
+	const dispatch = useDispatch();
+
+	const onChangeCategory = (id) => {
+		dispatch(setCaregoryId(id));
+	};
+
+	const { searchValue } = useContext(SearchContext);
 	const [pizzass, setPizzas] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
-	const [activeCategory, setActiveCategory] = useState(0);
 	const [currentPage, setCurrentPage] = useState(1);
-	const [selectedSort, setSelectedSort] = useState({
-		name: "по популярности",
-		sort: "rating",
-	});
 
 	const baseurl = "https://6321861e82f8687273b37ba3.mockapi.io/pizzas";
-	console.log(searchValue);
+	const sortBy = sort.sortProperty.replace("-", "");
+	const order = sort.sortProperty.includes("-") ? "asc" : "desc";
+	const category = categoryId > 0 ? categoryId : "";
+	const search = searchValue ? searchValue : "";
 
 	useEffect(() => {
 		setIsLoading(true);
 		fetch(`${baseurl}
-		?title=${searchValue ? searchValue : ""}
-		&category=${activeCategory ? activeCategory : ""}
-		&sortBy=${selectedSort.sort.replace("-", "")}&order=${
-			selectedSort.sort.includes("-") ? "asc" : "desc"
-		}
+		?title=${search}
+		&category=${category}
+		&sortBy=${sortBy}&order=${order}
     &page=${currentPage}&limit=4  
       `)
 			.then((res) => res.json())
@@ -36,22 +41,18 @@ const Home = () => {
 			.catch((err) => alert(err))
 			.finally(() => setIsLoading(false));
 		window.scrollTo(0, 0);
-	}, [activeCategory, selectedSort, searchValue, currentPage]);
+	}, [categoryId, sort, searchValue, currentPage]);
 
-	const items = pizzass
-		// .filter((item) =>
-		// 	item.title.toLowerCase().includes(searchValue.toLowerCase())
-		// )
-		.map((pizza) => (
-			<PizzaBlock
-				types={pizza.types}
-				image={pizza.imageUrl}
-				key={pizza.id}
-				sizes={pizza.sizes}
-				title={pizza.title}
-				price={pizza.price}
-			/>
-		));
+	const items = pizzass.map((pizza) => (
+		<PizzaBlock
+			types={pizza.types}
+			image={pizza.imageUrl}
+			key={pizza.id}
+			sizes={pizza.sizes}
+			title={pizza.title}
+			price={pizza.price}
+		/>
+	));
 
 	const sleletons = [...new Array(4)].map((_, i) => <Skeleton key={i} />);
 
@@ -59,10 +60,10 @@ const Home = () => {
 		<div className="container">
 			<div className="content__top">
 				<Categories
-					activeCategory={activeCategory}
-					setActiveCategory={setActiveCategory}
+					activeCategory={categoryId}
+					setActiveCategory={onChangeCategory}
 				/>
-				<Sort selected={selectedSort} setSelected={setSelectedSort} />
+				<Sort />
 			</div>
 			<h2 className="content__title">Все пиццы</h2>
 			<div className="content__items">
