@@ -8,12 +8,12 @@ function Sort() {
 
 	const [isVisible, setIsVisible] = useState(false);
 	const list = [
-		{ name: "по популярности -", sortProperty: "rating" },
-		{ name: "по популярности +", sortProperty: "-rating" },
-		{ name: "по цене -", sortProperty: "price" },
-		{ name: "по цене +", sortProperty: "-price" },
-		{ name: "по алфавиту -", sortProperty: "title" },
-		{ name: "по алфавиту +", sortProperty: "-title" },
+		{ name: "по популярности ↓", sortProperty: "rating" },
+		{ name: "по популярности ↑", sortProperty: "-rating" },
+		{ name: "по цене ↓", sortProperty: "price" },
+		{ name: "по цене ↑", sortProperty: "-price" },
+		{ name: "по алфавиту ↓", sortProperty: "title" },
+		{ name: "по алфавиту ↑", sortProperty: "-title" },
 	];
 
 	const onClickSelected = (item) => {

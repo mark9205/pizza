@@ -7,6 +7,7 @@ import Skeleton from "../components/PizzaBlockSkeleton";
 import Sort from "../components/Sort";
 import { useSelector, useDispatch } from "react-redux";
 import { setCaregoryId } from "../redux/slices/filterSlice";
+import axios from "axios";
 
 const Home = () => {
 	const { sort, categoryId } = useSelector((state) => state.filter);
@@ -25,23 +26,20 @@ const Home = () => {
 	const baseurl = "https://6321861e82f8687273b37ba3.mockapi.io/pizzas";
 	const sortBy = sort.sortProperty.replace("-", "");
 	const order = sort.sortProperty.includes("-") ? "asc" : "desc";
-	const category = categoryId > 0 ? categoryId : "";
-	const search = searchValue ? searchValue : "";
+	const category = categoryId > 0 ? `category=${categoryId}` : "";
+	const title = searchValue ? `title=${searchValue}` : "";
 
 	useEffect(() => {
 		setIsLoading(true);
-		fetch(`${baseurl}
-		?title=${search}
-		&category=${category}
-		&sortBy=${sortBy}&order=${order}
-    &page=${currentPage}&limit=4  
-      `)
-			.then((res) => res.json())
-			.then((json) => setPizzas(json))
+		axios
+			.get(
+				`${baseurl}?page=${currentPage}&limit=4&${category}&${title}&sortBy=${sortBy}&order=${order}`
+			)
+			.then((res) => setPizzas(res.data))
 			.catch((err) => alert(err))
-			.finally(() => setIsLoading(false));
+			.finally(setIsLoading(false));
 		window.scrollTo(0, 0);
-	}, [categoryId, sort, searchValue, currentPage]);
+	}, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
 	const items = pizzass.map((pizza) => (
 		<PizzaBlock
