@@ -6,11 +6,13 @@ import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlockSkeleton";
 import Sort from "../components/Sort";
 import { useSelector, useDispatch } from "react-redux";
-import { setCaregoryId } from "../redux/slices/filterSlice";
+import { setCaregoryId, setCurrentPage } from "../redux/slices/filterSlice";
 import axios from "axios";
 
 const Home = () => {
-	const { sort, categoryId } = useSelector((state) => state.filter);
+	const { sort, categoryId, currentPage } = useSelector(
+		(state) => state.filter
+	);
 
 	const dispatch = useDispatch();
 
@@ -18,10 +20,13 @@ const Home = () => {
 		dispatch(setCaregoryId(id));
 	};
 
+	const onChangePage = (num) => {
+		dispatch(setCurrentPage(num));
+	};
+
 	const { searchValue } = useContext(SearchContext);
 	const [pizzass, setPizzas] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
-	const [currentPage, setCurrentPage] = useState(1);
 
 	const baseurl = "https://6321861e82f8687273b37ba3.mockapi.io/pizzas";
 	const sortBy = sort.sortProperty.replace("-", "");
@@ -67,7 +72,7 @@ const Home = () => {
 			<div className="content__items">
 				{isLoading ? sleletons : items}
 			</div>
-			<Pagination onPageChange={(num) => setCurrentPage(num)} />
+			<Pagination currentPage={currentPage} onPageChange={onChangePage} />
 		</div>
 	);
 };
