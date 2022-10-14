@@ -2,19 +2,21 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setSort } from "../redux/slices/filterSlice";
 
+export const sortList = [
+	{ name: "по популярности ↓", sortProperty: "rating" },
+	{ name: "по популярности ↑", sortProperty: "-rating" },
+	{ name: "по цене ↓", sortProperty: "price" },
+	{ name: "по цене ↑", sortProperty: "-price" },
+	{ name: "по алфавиту ↓", sortProperty: "title" },
+	{ name: "по алфавиту ↑", sortProperty: "-title" },
+];
+
 function Sort() {
 	const selected = useSelector((state) => state.filter.sort);
 	const dispatch = useDispatch();
 
 	const [isVisible, setIsVisible] = useState(false);
-	const list = [
-		{ name: "по популярности ↓", sortProperty: "rating" },
-		{ name: "по популярности ↑", sortProperty: "-rating" },
-		{ name: "по цене ↓", sortProperty: "price" },
-		{ name: "по цене ↑", sortProperty: "-price" },
-		{ name: "по алфавиту ↓", sortProperty: "title" },
-		{ name: "по алфавиту ↑", sortProperty: "-title" },
-	];
+
 
 	const onClickSelected = (item) => {
 		dispatch(setSort(item));
@@ -31,7 +33,7 @@ function Sort() {
 			{isVisible && (
 				<div className="sort__popup">
 					<ul>
-						{list.map((item, i) => (
+						{sortList.map((item, i) => (
 							<li
 								className={
 									selected.sortProperty === item.sortProperty ? "active" : ""
