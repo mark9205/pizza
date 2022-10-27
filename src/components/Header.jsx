@@ -4,7 +4,8 @@ import Search from './Search';
 import { useSelector } from 'react-redux';
 
 function Header() {
-  const { totalPrice } = useSelector((state) => state.cart);
+  const { items, totalPrice } = useSelector((state) => state.cart);
+  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
 
   return (
     <div className="header">
@@ -23,7 +24,7 @@ function Header() {
           <Link to="/cart" className="button button--cart">
             <span>{totalPrice} ₽</span>
             <div className="button__delimiter"></div>
-            <span>1</span>
+            <span>{totalCount}</span>
           </Link>
         </div>
       </div>

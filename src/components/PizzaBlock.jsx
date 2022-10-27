@@ -8,10 +8,10 @@ function PizzaBlock({ id, title, price, sizes, image, types }) {
     state.cart.items.find((item) => item.id === id)
   );
   const addedCount = cartItem ? cartItem.count : 0;
-
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
   const typeNames = ['тонкое', 'традиционное'];
+  const sizeNames = [26, 30, 40];
 
   const onClickAdd = () => {
     const item = {
@@ -20,7 +20,7 @@ function PizzaBlock({ id, title, price, sizes, image, types }) {
       price,
       image,
       type: typeNames[activeType],
-      size: activeSize,
+      size: sizeNames[activeSize],
     };
     dispatch(addItem(item));
   };
