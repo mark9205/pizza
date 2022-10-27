@@ -100,6 +100,7 @@ const Home = () => {
 
   const items = pizzass.map((pizza) => (
     <PizzaBlock
+      id={pizza.id}
       types={pizza.types}
       image={pizza.imageUrl}
       key={pizza.id}
