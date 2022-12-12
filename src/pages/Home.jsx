@@ -15,10 +15,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import qs from "qs";
 import { useRef } from "react";
+import { setItems } from "../redux/slices/pizzasSlise";
 
 const Home = () => {
 	const { searchValue } = useContext(SearchContext);
-	const [pizzass, setPizzas] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const isSearch = useRef(false);
 	const isMounted = useRef(false);
@@ -27,6 +27,7 @@ const Home = () => {
 		(state) => state.filter
 	);
 
+	const { pizzass } = useSelector((state) => state.pizza);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
@@ -47,10 +48,10 @@ const Home = () => {
 
 		setIsLoading(true);
 		try {
-			const res = await axios.get(
+			const { data } = await axios.get(
 				`${baseurl}?page=${currentPage}&limit=4&${category}&${title}&sortBy=${sortBy}&order=${order}`
 			);
-			setPizzas(res.data);
+			dispatch(setItems(data));
 			window.scrollTo(0, 0);
 		} catch (error) {
 			alert("ошибка при получении ПИЦЦ!", error);
