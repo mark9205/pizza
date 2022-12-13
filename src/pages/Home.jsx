@@ -12,14 +12,12 @@ import {
 	setFilters,
 } from "../redux/slices/filterSlice";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import qs from "qs";
 import { useRef } from "react";
-import { setItems } from "../redux/slices/pizzasSlise";
+import { fetchPizzas } from "../redux/slices/pizzasSlise";
 
 const Home = () => {
 	const { searchValue } = useContext(SearchContext);
-	const [isLoading, setIsLoading] = useState(true);
 	const isSearch = useRef(false);
 	const isMounted = useRef(false);
 
@@ -27,7 +25,7 @@ const Home = () => {
 		(state) => state.filter
 	);
 
-	const { pizzass } = useSelector((state) => state.pizza);
+	const { pizzass, status } = useSelector((state) => state.pizza);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
@@ -39,25 +37,24 @@ const Home = () => {
 		dispatch(setCurrentPage(num));
 	};
 
-	const fetchPizzas = async () => {
+	const getPizzas = async () => {
 		const baseurl = "https://6321861e82f8687273b37ba3.mockapi.io/pizzas";
 		const sortBy = sort.sortProperty.replace("-", "");
 		const order = sort.sortProperty.includes("-") ? "asc" : "desc";
 		const category = categoryId > 0 ? `category=${categoryId}` : "";
 		const title = searchValue ? `title=${searchValue}` : "";
 
-		setIsLoading(true);
-		try {
-			const { data } = await axios.get(
-				`${baseurl}?page=${currentPage}&limit=4&${category}&${title}&sortBy=${sortBy}&order=${order}`
-			);
-			dispatch(setItems(data));
-			window.scrollTo(0, 0);
-		} catch (error) {
-			alert("ошибка при получении ПИЦЦ!", error);
-		} finally {
-			setIsLoading(false);
-		}
+		dispatch(
+			fetchPizzas({
+				baseurl,
+				sortBy,
+				order,
+				category,
+				title,
+				currentPage,
+			})
+		);
+		window.scrollTo(0, 0);
 	};
 
 	//если изменили параметры и был первый рендер - вшиваем параметры в адресную строку
@@ -75,7 +72,10 @@ const Home = () => {
 			navigate(queryString);
 		}
 		isMounted.current = true;
-	}, [categoryId, sort.sortProperty, currentPage]);
+    // if (!window.location.search) {
+    //   fetchPizzas()
+    // }
+	}, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
 	//если был первый рендер - проверяем url-параметры и сохраняем в редаксе
 	useEffect(() => {
@@ -97,7 +97,7 @@ const Home = () => {
 	//если был первый рендер - запрашиваем пиццы
 	useEffect(() => {
 		if (!isSearch.current) {
-			fetchPizzas();
+			getPizzas();
 		}
 		isSearch.current = false;
 	}, [categoryId, sort.sortProperty, searchValue, currentPage]);
@@ -127,7 +127,7 @@ const Home = () => {
 			</div>
 			<h2 className="content__title">Все пиццы</h2>
 			<div className="content__items">
-				{isLoading ? sleletons : items}
+				{status === "loading" ? sleletons : items}
 			</div>
 			<Pagination currentPage={currentPage} onPageChange={onChangePage} />
 		</div>
