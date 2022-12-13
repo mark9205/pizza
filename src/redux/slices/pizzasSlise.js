@@ -11,7 +11,7 @@ export const fetchPizzas = createAsyncThunk(
 		return data;
 	}
 );
-//	const [isLoading, setIsLoading] = useState(true);
+
 const initialState = {
 	pizzass: [],
 	status: "loading", //loading, success, error

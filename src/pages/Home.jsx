@@ -56,7 +56,7 @@ const Home = () => {
 		);
 		window.scrollTo(0, 0);
 	};
-
+console.log(window.location.search);
 	//если изменили параметры и был первый рендер - вшиваем параметры в адресную строку
 	useEffect(() => {
 		if (isMounted.current) {
@@ -72,9 +72,6 @@ const Home = () => {
 			navigate(queryString);
 		}
 		isMounted.current = true;
-    // if (!window.location.search) {
-    //   fetchPizzas()
-    // }
 	}, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
 	//если был первый рендер - проверяем url-параметры и сохраняем в редаксе
@@ -126,9 +123,18 @@ const Home = () => {
 				<Sort />
 			</div>
 			<h2 className="content__title">Все пиццы</h2>
-			<div className="content__items">
-				{status === "loading" ? sleletons : items}
-			</div>
+			{status === "error" ? (
+				<div className="content__error-info">
+					<h2>
+						Произошла ошибка загрузки <span>😕</span>
+            <p>К сожалению, не удалось получить пиццы..</p>
+					</h2>
+				</div>
+			) : (
+				<div className="content__items">
+					{status === "loading" ? sleletons : items}
+				</div>
+			)}
 			<Pagination currentPage={currentPage} onPageChange={onChangePage} />
 		</div>
 	);
