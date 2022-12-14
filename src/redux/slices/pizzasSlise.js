@@ -3,12 +3,17 @@ import axios from "axios";
 
 export const fetchPizzas = createAsyncThunk(
 	"pizza/fetchPizzasStatus",
-	async (params) => {
+	async (params, thunkApi) => {
 		const { baseurl, currentPage, category, title, sortBy, order } = params;
 		const { data } = await axios.get(
 			`${baseurl}?page=${currentPage}&limit=4&${category}&${title}&sortBy=${sortBy}&order=${order}`
 		);
-		return data;
+
+		if (!data.length) {
+			return thunkApi.rejectWithValue("Пицц пока нет");
+		}
+
+		return thunkApi.fulfillWithValue(data);
 	}
 );
 
@@ -26,15 +31,18 @@ export const pizzasSlice = createSlice({
 		},
 	},
 	extraReducers: {
-		[fetchPizzas.pending]: (state) => {
+		[fetchPizzas.pending]: (state, action) => {
+			console.log('loading', action)
 			state.status = "loading";
-            state.pizzass = [];
+			state.pizzass = [];
 		},
 		[fetchPizzas.fulfilled]: (state, action) => {
+			console.log('fulfilled', action)
 			state.pizzass = action.payload;
 			state.status = "success";
 		},
-		[fetchPizzas.rejected]: (state) => {
+		[fetchPizzas.rejected]: (state, action) => {
+			console.log('rejected', action)
 			state.status = "error";
 			state.pizzass = [];
 		},
