@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useState } from 'react';
 
 const FullPizza = () => {
-  const [pizza, setPizza] = useState({});
+  const [pizza, setPizza] = useState();
   const { id } = useParams();
 
   useEffect(() => {
@@ -22,6 +22,10 @@ const FullPizza = () => {
     }
     fetchPizza();
   }, [id]);
+
+  if (!pizza) {
+    return 'загрузка...';
+  }
 
   return (
     <div className="container">

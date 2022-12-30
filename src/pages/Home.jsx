@@ -11,7 +11,7 @@ import {
   setCurrentPage,
   setFilters,
 } from '../redux/slices/filterSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import qs from 'qs';
 import { useRef } from 'react';
 import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzasSlise';
@@ -95,15 +95,9 @@ const Home = () => {
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
   const items = pizzass.map((pizza) => (
-    <PizzaBlock
-      id={pizza.id}
-      types={pizza.types}
-      image={pizza.imageUrl}
-      key={pizza.id}
-      sizes={pizza.sizes}
-      title={pizza.title}
-      price={pizza.price}
-    />
+    <Link to={`pizza/${pizza.id}`} key={pizza.id}>
+      <PizzaBlock {...pizza} />
+    </Link>
   ));
 
   const sleletons = [...new Array(4)].map((_, i) => <Skeleton key={i} />);
