@@ -94,11 +94,7 @@ const Home = () => {
     isSearch.current = false;
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
-  const items = pizzass.map((pizza) => (
-    <Link to={`pizza/${pizza.id}`} key={pizza.id}>
-      <PizzaBlock {...pizza} />
-    </Link>
-  ));
+  const items = pizzass.map((pizza) => <PizzaBlock {...pizza} />);
 
   const sleletons = [...new Array(4)].map((_, i) => <Skeleton key={i} />);
 

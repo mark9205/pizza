@@ -1,13 +1,13 @@
 import React from 'react';
 //import pizza from '../assets/img/pngegg.png';
-import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useState } from 'react';
 
 const FullPizza = () => {
   const [pizza, setPizza] = useState();
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchPizza() {
@@ -18,6 +18,7 @@ const FullPizza = () => {
         setPizza(data);
       } catch (error) {
         alert('Ошибка загрузки пиццы, попробуйте повторить запрос');
+        navigate('/');
       }
     }
     fetchPizza();
