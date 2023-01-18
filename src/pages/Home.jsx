@@ -11,7 +11,7 @@ import {
   setCurrentPage,
   setFilters,
 } from '../redux/slices/filterSlice';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
 import { useRef } from 'react';
 import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzasSlise';
