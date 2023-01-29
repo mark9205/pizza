@@ -16,7 +16,7 @@ import qs from 'qs';
 import { useRef } from 'react';
 import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzasSlise';
 
-const Home = () => {
+const Home: React.FC = () => {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
   const { sort, categoryId, currentPage, searchValue } =
@@ -25,11 +25,11 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const onChangeCategory = (id) => {
+  const onChangeCategory = (id: number) => {
     dispatch(setCaregoryId(id));
   };
 
-  const onChangePage = (num) => {
+  const onChangePage = (num: number) => {
     dispatch(setCurrentPage(num));
   };
 
@@ -41,6 +41,7 @@ const Home = () => {
     const title = searchValue ? `title=${searchValue}` : '';
 
     dispatch(
+      //@ts-ignore
       fetchPizzas({
         baseurl,
         sortBy,
