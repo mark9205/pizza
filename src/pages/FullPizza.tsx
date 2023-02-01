@@ -22,6 +22,7 @@ const FullPizza: React.FC = () => {
       }
     }
     fetchPizza();
+    //eslint-disable-next-line
   }, [id]);
 
   if (!pizza) {

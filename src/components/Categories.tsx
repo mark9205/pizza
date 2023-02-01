@@ -1,21 +1,23 @@
 import React from "react";
 
 type CategoriesProps = {
-	activeCategory: number,
-	setActiveCategory: (index: number) => void
-}
+	activeCategory: number;
+	setActiveCategory: (index: number) => void;
+};
 
+const categories = [
+	"Все",
+	"Мясные",
+	"Вегетарианская",
+	"Гриль",
+	"Острые",
+	"Закрытые",
+];
 
-const Categories: React.FC<CategoriesProps> = ({ activeCategory, setActiveCategory }) => {
-	const categories = [
-		"Все",
-		"Мясные",
-		"Вегетарианская",
-		"Гриль",
-		"Острые",
-		"Закрытые",
-	];
-
+const Categories: React.FC<CategoriesProps> = ({
+	activeCategory,
+	setActiveCategory,
+}) => {
 	return (
 		<div className="categories">
 			<ul>
@@ -31,6 +33,6 @@ const Categories: React.FC<CategoriesProps> = ({ activeCategory, setActiveCatego
 			</ul>
 		</div>
 	);
-}
+};
 
 export default Categories;
