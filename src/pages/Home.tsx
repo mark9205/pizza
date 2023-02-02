@@ -4,7 +4,7 @@ import Pagination from "../components/Pagination";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlockSkeleton";
 import Sort, { sortList } from "../components/Sort";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
 	selectFilter,
 	setCaregoryId,
@@ -14,7 +14,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import qs from "qs";
 import { useRef } from "react";
-import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzasSlise";
+import { fetchPizzas, SearchPizzaParams, selectPizzaData } from "../redux/slices/pizzasSlise";
+import { useAppDispatch } from "../redux/store";
 
 const Home: React.FC = () => {
 	const isSearch = useRef(false);
@@ -23,7 +24,7 @@ const Home: React.FC = () => {
 		useSelector(selectFilter);
 	const { pizzass, status } = useSelector(selectPizzaData);
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const onChangeCategory = (id: number) => {
 		dispatch(setCaregoryId(id));
@@ -41,7 +42,6 @@ const Home: React.FC = () => {
 		const title = searchValue ? `title=${searchValue}` : "";
 
 		dispatch(
-			//@ts-ignore
 			fetchPizzas({
 				baseurl,
 				sortBy,
@@ -69,18 +69,20 @@ const Home: React.FC = () => {
 		}
 		isMounted.current = true;
     // eslint-disable-next-line
-	}, [categoryId, sort.sortProperty, searchValue, currentPage]);
+	}, [categoryId, sort, searchValue, currentPage]);
 
 	//если был первый рендер - проверяем url-параметры и сохраняем в редаксе
 	useEffect(() => {
 		if (window.location.search) {
-			const params = qs.parse(window.location.search.substring(1));
+			const params = qs.parse(window.location.search.substring(1)) as unknown as SearchPizzaParams;
 			const sort = sortList.find(
-				(obj) => obj.sortProperty === params.sortProperty
+				(obj) => obj.sortProperty === params.sortBy
 			);
 			dispatch(
 				setFilters({
-					...params,
+					searchValue: params.title,
+    				currentPage: Number(params.currentPage),
+    				categoryId: Number(params.category),
 					sort,
 				})
 			);
@@ -96,7 +98,7 @@ const Home: React.FC = () => {
 		}
 		isSearch.current = false;
     //eslint-disable-next-line
-	}, [categoryId, sort.sortProperty, searchValue, currentPage]);
+	}, [categoryId, sort, searchValue, currentPage]);
 
 	const items = pizzass.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />);
 
